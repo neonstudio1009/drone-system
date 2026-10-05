@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="天空之眼｜無人機智慧救災系統專案成果網站">
+  <title>天空之眼｜無人機智慧救災系統</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="#top">SKY EYE<span>／天空之眼</span></a>
+    <nav>
+      <a href="#about">專案</a>
+      <a href="#flow">系統流程</a>
+      <a href="#vision">影像分析</a>
+      <a href="#evacuation">人員與避難</a>
+      <a href="#linebot">LINE Bot</a>
+      <a href="#development">開發歷程</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">DRONE × COMPUTER VISION × DISASTER RESPONSE</p>
+          <h1>天空之眼</h1>
+          <h2>無人機智慧救災系統</h2>
+          <p class="hero-text">
+            以無人機取得災區影像，結合影像配準、災損分析、人員偵測與避難規劃，
+            再透過雲端與 LINE Bot 將分析結果傳遞給使用者。
+          </p>
+          <a class="button" href="#flow">探索系統 ↓</a>
+        </div>
+        <div class="hero-panel">
+          <div class="panel-label">SYSTEM PIPELINE</div>
+          <div class="mini-flow">
+            <span>空拍</span><b>→</b><span>配準</span><b>→</b><span>災損</span>
+            <b>→</b><span>人員</span><b>→</b><span>避難</span><b>→</b><span>通報</span>
+          </div>
+          <div class="hero-note">從影像取得到資訊通報的完整原型流程</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="section-head">
+        <p class="eyebrow">01 / PROJECT</p>
+        <h2>為什麼做「天空之眼」？</h2>
+      </div>
+      <div class="two-col">
+        <div class="big-statement">
+          災害發生後，<strong>第一時間掌握現場資訊</strong>本身就是重要的救援能力。
+        </div>
+        <div class="prose">
+          <p>
+            專案從災害現場難以快速掌握災情的問題出發。傳統逐區排查需要時間，
+            也可能讓救援人員暴露在危險環境中，因此嘗試以無人機進行空中勘查，
+            再由程式分析災前與災後影像。
+          </p>
+          <p>
+            系統希望回答三個核心問題：哪裡可能受損？哪裡可能有人？
+            在目前影像條件下，可以提供哪些避難資訊？
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="flow" class="section dark-section">
+      <div class="section-head">
+        <p class="eyebrow">02 / SYSTEM FLOW</p>
+        <h2>系統如何運作？</h2>
+        <p>依照提供的專題講稿與流程簡報整理成六個展示階段。</p>
+      </div>
+      <div class="flow-grid">
+        <article class="flow-card"><span>01</span><h3>無人機影像取得</h3><p>使用搭載鏡頭的無人機取得現場影像，並回傳至電腦進行後續處理。</p></article>
+        <article class="flow-card"><span>02</span><h3>影像配準</h3><p>先處理不同拍攝角度、高度與位置造成的偏移，再進行災前／災後比較。</p></article>
+        <article class="flow-card"><span>03</span><h3>災區受損偵測</h3><p>分析影像差異並進行形態學處理與區域篩選，將可能受損區域標示出來。</p></article>
+        <article class="flow-card"><span>04</span><h3>人員偵測</h3><p>使用 OpenCV HOG 人員偵測器尋找可能的人員位置，作為後續規劃依據。</p></article>
+        <article class="flow-card"><span>05</span><h3>避難規劃</h3><p>避開災損區域，產生候選避難點，並計算人員與避難點的距離。</p></article>
+        <article class="flow-card"><span>06</span><h3>雲端與 LINE Bot</h3><p>將分析資訊與圖片透過雲端、伺服器及 LINE Bot 傳送給使用者。</p></article>
+      </div>
+    </section>
+
+    <section id="vision" class="section">
+      <div class="section-head">
+        <p class="eyebrow">03 / COMPUTER VISION</p>
+        <h2>從「兩張照片不同」到「找出可能災損」</h2>
+      </div>
+      <div class="comparison">
+        <div class="image-slot">
+          <span>IMAGE 01</span>
+          <h3>災前影像</h3>
+          <p>將你的 <code>base.jpg</code> 放到<br><code>assets/images/base.jpg</code></p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="image-slot">
+          <span>IMAGE 02</span>
+          <h3>災後影像</h3>
+          <p>將你的 <code>scene.jpg</code> 放到<br><code>assets/images/scene.jpg</code></p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="image-slot accent">
+          <span>RESULT</span>
+          <h3>災損分析</h3>
+          <p>將你的分析結果放到<br><code>assets/images/damage-result.jpg</code></p>
+        </div>
+      </div>
+      <div class="method-box">
+        <h3>影像配準</h3>
+        <p>
+          完整程式碼版本使用 ORB 特徵點、BFMatcher 與 Homography / RANSAC
+          將兩張影像對齊，再進行後續分析。
+        </p>
+        <div class="tags"><span>ORB</span><span>BFMatcher</span><span>Homography</span><span>RANSAC</span><span>OpenCV</span></div>
+      </div>
+      <div class="method-box">
+        <h3>災損偵測</h3>
+        <p>
+          提供的完整 Python 程式碼目前實際執行的是 HSV 影像差異、閾值化、
+          形態學開／閉運算，以及連通元件面積篩選；講稿則描述曾進一步研究
+          結構相似度方法。網站因此將兩者分開標示，避免把研究敘述誤寫成目前程式的實際實作。
+        </p>
+        <div class="tags"><span>HSV</span><span>Threshold</span><span>Morphology</span><span>Connected Components</span></div>
+      </div>
+    </section>
+
+    <section id="evacuation" class="section dark-section">
+      <div class="section-head">
+        <p class="eyebrow">04 / PEOPLE & EVACUATION</p>
+        <h2>找到可能受損的地方，也關注「人在哪裡」</h2>
+      </div>
+      <div class="feature-grid">
+        <article>
+          <div class="number">01</div>
+          <h3>人員偵測</h3>
+          <p>程式中的 <code>detect_people()</code> 使用 OpenCV HOG 預設人員偵測器，取得偵測框中心點。</p>
+        </article>
+        <article>
+          <div class="number">02</div>
+          <h3>候選避難點</h3>
+          <p><code>generate_safe_points()</code> 會排除災損遮罩與綠色區域，並限制候選點彼此的最小距離。</p>
+        </article>
+        <article>
+          <div class="number">03</div>
+          <h3>最近避難點</h3>
+          <p>系統計算每個人與候選避難點的距離，找出最近的候選點並建立連線。</p>
+        </article>
+        <article>
+          <div class="number">04</div>
+          <h3>風險程度</h3>
+          <p>目前程式依災損比例與偵測人數以規則判定「低／中／高／極高」，屬於專案原型的分析規則。</p>
+        </article>
+      </div>
+      <div class="image-wide">
+        <span>RESULT IMAGE PLACEHOLDER</span>
+        <strong>將人員／災損／避難點分析結果放在這裡</strong>
+        <small>assets/images/evacuation-result.jpg</small>
+      </div>
+    </section>
+
+    <section id="linebot" class="section">
+      <div class="section-head">
+        <p class="eyebrow">05 / LINE BOT</p>
+        <h2>讓分析結果真正傳出去</h2>
+        <p>這裡已經預留 LINE Bot 實際回覆訊息的展示區。</p>
+      </div>
+      <div class="line-layout">
+        <div class="line-copy">
+          <h3>LINE Bot 通報</h3>
+          <p>
+            專案的資料流程包含分析圖片上傳、伺服器管理災害資訊，
+            以及透過 LINE Bot 回傳災害等級、位置、偵測人數、災損比例與分析圖片。
+          </p>
+          <div class="tags"><span>Cloud</span><span>Server</span><span>LINE Bot</span></div>
+        </div>
+        <div class="phone-placeholder">
+          <div class="phone-screen">
+            <span>LINE BOT SCREENSHOT</span>
+            <strong>把你的截圖放到</strong>
+            <code>assets/linebot/linebot-result.png</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="development" class="section dark-section">
+      <div class="section-head">
+        <p class="eyebrow">06 / DEVELOPMENT</p>
+        <h2>真正重要的是「怎麼改進」</h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item"><span>01</span><div><h3>先讓系統跑起來</h3><p>建立無人機取像、影像讀取與基本分析流程。</p></div></div>
+        <div class="timeline-item"><span>02</span><div><h3>發現影像不能直接比較</h3><p>不同角度、高度與拍攝位置會造成影像偏移，因此加入影像配準。</p></div></div>
+        <div class="timeline-item"><span>03</span><div><h3>處理災損誤判</h3><p>針對光線、陰影與雜訊造成的差異，逐步加入影像處理與區域篩選。</p></div></div>
+        <div class="timeline-item"><span>04</span><div><h3>從災損走向人的位置</h3><p>加入人員偵測與避難點規劃，使分析結果更接近使用情境。</p></div></div>
+        <div class="timeline-item"><span>05</span><div><h3>把結果送到手機</h3><p>整合雲端、伺服器與 LINE Bot，完成從拍攝、分析到通報的展示流程。</p></div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <p class="eyebrow">07 / LIMITATIONS</p>
+        <h2>研究限制與下一步</h2>
+      </div>
+      <div class="two-col">
+        <div class="prose">
+          <p>目前網站以提供的專題講稿、流程簡報與完整 Python 程式碼為基礎。災後情境部分使用模擬資料；系統中的人員偵測、避難點與風險規則也屬原型實作，因此不應視為實際災害現場的官方判定。</p>
+        </div>
+        <div class="next-box">
+          <h3>Future</h3>
+          <p>紅外線／熱影像、Edge AI、降低網路依賴、更完整的 GIS 與道路網路分析，皆可作為後續研究方向。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      <strong>SKY EYE ／ 天空之眼</strong>
+      <p>無人機智慧救災系統｜Project Showcase</p>
+    </div>
+    <p class="footer-note">GitHub Pages Ready · 目前為第一版展示網站</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
